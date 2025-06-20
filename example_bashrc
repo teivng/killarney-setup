@@ -80,6 +80,17 @@ scexcept() {
     fi
 }
 
+# source your environment directly
+source() {
+  if [ -d "$HOME/$1/bin" ] && [ -f "$HOME/$1/bin/activate" ]; then
+    # Source the virtual environment activate script
+    . "$HOME/$1/bin/activate"
+  else
+    # Fallback to the default source behavior for other arguments
+    command source "$@"
+  fi
+}
+
 # launch scripts
 
 # ---------------------------------
