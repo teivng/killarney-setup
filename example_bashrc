@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# In addition to the default .bashrc provided, here are some cool macros to add.
+
+# Traditional safety measure
+alias mv='mv -i'
+alias rm='rm -i'
+alias cp='cp -i'
+
+# .bashrc stuff
+alias b="vim ~/.bashrc"
+alias bs="source ~/.bashrc"
+
+# this one sends you straight to your working directory
+alias m="cd /home/student/projects/aip-supervisor/student"
+
+# dopamine stuff
+alias wn="watch -n 0.5 nvidia-smi"
+
+# github stuff
+alias s="git status"
+alias pp="git pull"
+alias aa="git add . && git commit -m 'mraow' && git push"
+
+# slurm stuff
+alias sc="scancel -u student"
+alias count="squeue -u student -h -t pending,running -r | wc -l"
+# useful to inspect rats
+alias sqq="squeue -o '%.9P %.8u %.20j %.2t %.10M %.20R %.20b' | sort -k6"
+
+# jupyter stuff
+alias jnp="jupyter notebook --no-browser --port=8.8.8.8 --ip=0.0.0.0"
+
+# misc stuff
+alias h="htop"
+
+# --------------------
+#      FUNCTIONS
+# --------------------
+# borrow a node
+gpu_node() {
+    if [ "$#" -ne 4 ]; then
+        echo "Usage: gpu_node <gpu_type: h100|l40s> <num_gpus> <num_cpus> <ram>"
+        return 1
+    fi
+
+    local gpu_type="$1"
+    local num_gpus="$2"
+    local num_cpus="$3"
+    local ram="$4"
+
+    if [[ "$gpu_type" != "h100" && "$gpu_type" != "l40s" ]]; then
+        echo "Error: GPU type must be 'h100' or 'l40s'"
+        return 1
+    fi
+
+    srun -A aip-supervisor -c "$num_cpus" --gres=gpu:"$gpu_type":"$num_gpus" --mem="$ram" --time=1-00:00:00 --pty bash
+}
+t() {
+        /home/student/projects/aip-supervisor/student/code tunnel
+}
+
+# cancel everything except one job,
+# useful if you're spamming a bunch of sbatch jobs 
+# and maintaining one jupyter job for debugging
+scexcept() {
+    if [ -z "$1" ]; then
+        echo "Usage: scexcept <job_id_to_keep>"
+        return 1
+    fi
+    local keep="$1"
+    local to_cancel=$(squeue -u "$USER" -h -o "%A" | grep -v "^${keep}$")
+    if [ -n "$to_cancel" ]; then
+        echo "Cancelling jobs: $to_cancel"
+        scancel $to_cancel
+    else
+        echo "No other jobs to cancel."
+    fi
+}
+
+# launch scripts
+
+# ---------------------------------
+#              modules
+# ---------------------------------
+
+# to use uv
+module load rust/1.85
+
+# sends you to your dev directory
+m

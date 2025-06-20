@@ -1,0 +1,18 @@
+#!/bin/bash
+#SBATCH --job-name="my_job"
+#SBATCH -A aip-supervisor
+#SBATCH -c 12
+#SBATCH --mem=64G
+#SBATCH --gres=gpu:l40s:1
+#SBATCH --time=1-00:00:00
+#SBATCH --open-mode=append
+#SBATCH --output=logs/slurm_%j.out
+#SBATCH --error=logs/slurm_%j.err
+
+# activate environment
+source ~/my_env/bin/activate
+
+# enter working directory
+cd ~/projects/aip-supervisor/student/my_project
+
+python run.py
