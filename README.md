@@ -193,6 +193,10 @@ sq
 sq
 sq
 ```
+Monitor your jobs lazily:
+```
+wsq
+```
 
 Dopamine hit:
 ```
