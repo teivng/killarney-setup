@@ -25,6 +25,8 @@ alias aa="git add . && git commit -m 'mraow' && git push"
 # slurm stuff
 alias sc="scancel -u student"
 alias count="squeue -u student -h -t pending,running -r | wc -l"
+alias wsq="watch -n 0.5 squeue -u student"
+
 # useful to inspect rats
 alias sqq="squeue -o '%.9P %.8u %.20j %.2t %.10M %.20R %.20b' | sort -k6"
 

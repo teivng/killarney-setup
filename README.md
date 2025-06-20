@@ -182,7 +182,19 @@ Cancel all jobs except 12345:
 ```
 scexcept 12345
 ```
-Dopamine:
+Nuke all your jobs:
+```
+sc
+```
+Monitor your jobs:
+```
+sq
+sq
+sq
+sq
+```
+
+Dopamine hit:
 ```
 wn
 ```
