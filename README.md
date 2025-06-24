@@ -227,7 +227,7 @@ your_script.py
 
 where ``--rdzv_id`` can be set to whatever but needs to be the same across nodes, and ``--rdzv_endpoint`` is the ``address:port`` of the master node. The only thing that changes is the node rank, with the master node at rank ``0``. **This will run on Infiniband**, even though the address is an IP address. For streamlining this setup in a ``sbatch`` file and automating IP address assignment as rendezvous endpoint, you can ask ChatGPT. 
 
-
+We assume that in your main process file, you're initializing ``nccl`` correctly. 
 
 ## Using macros in ``~/.bashrc``
 Borrow some GPUs:
