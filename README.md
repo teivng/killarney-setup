@@ -173,6 +173,62 @@ It's recommended that right after you grab resources and ``slurm`` sends you to 
 ### ``sbatch``-ing your ``jupyter`` server
 Yes you can do it. Make a ``sbatch_jupyter.slrm`` with the desired resource configuration, make sure to configure the output to write into some file somewhere so that you can read the URL in order to paste into your VSCode client's kernel selector. 
 
+## Distributed training
+
+This section is not a guide to writing distributed training code. It is merely here to show correct configurations on Killarney.
+
+### Single-node multi-GPU
+
+You can use ``torchrun`` with ``--nproc_per_node`` the number of GPUs you wih to use, ``--nnodes=1``, or use ``accelerate``. 
+
+### Multi-node multi-GPU
+
+Running ``ifconfig``, two network interfaces are of interest: ``eth0`` and ``ib0``, corresponding to TCP/IP and InfiniBand respectively. Let's say you're on ``kn123``, the IP address (``eth0``) is ``10.1.1.123``, while the InfiniBand address (``ib0``) is ``10.0.1.123``. As far as we can tell, this applies to all compute nodes ``knXYZ``. 
+
+We would like to have nodes talk to each other through ``ib0`` instead of ``eth0``. **HOWEVER**, the correct ``torchrun`` ``--rdzv_endpoint`` is going to be the ``eth0`` address, **not** the ``ib0`` address, for reasons unknown, we will not worry about those right meow.
+
+
+Let's say we're doing distirbuted training on and we are allocated 8 GPUs across 2 nodes ``kn010`` and ``kn011``, with ``kn010`` being the master node. First, export certain environment variables to use InfiniBand **on both nodes**:
+
+```
+export NCCL_IB_DISABLE=0             # Enable InfiniBand
+export NCCL_SOCKET_IFNAME=ib0        # Use IB interface (verify with `ifconfig`)
+export NCCL_IB_HCA=mlx5_0            # Adjust to your HCA (check with `ibstat`)
+export NCCL_DEBUG=INFO               # Optional: verbose logging
+```
+
+We recommend you put this in a ``~/ib`` file so that upon successful allocation of compute resources, you can ``source ~/ib`` immediately after loading your favorite modules. 
+
+On ``kn010``: 
+
+```
+torchrun \
+--nnodes=2 \
+--nproc_per_node=4 \
+--node_rank=0 \
+--rdzv_id=123 \
+--rdzv_backend=c10d \
+--rdzv_endpoint=10.1.1.10:29500 \
+your_script.py
+```
+
+On ``kn011``: 
+
+```
+torchrun \
+--nnodes=2 \
+--nproc_per_node=4 \
+--node_rank=1 \
+--rdzv_id=123 \
+--rdzv_backend=c10d \
+--rdzv_endpoint=10.1.1.10:29500 \
+your_script.py
+```
+
+where ``--rdzv_id`` can be set to whatever but needs to be the same across nodes, and ``--rdzv_endpoint`` is the ``address:port`` of the master node. The only thing that changes is the node rank, with the master node at rank ``0``. **This will run on Infiniband**, even though the address is an IP address. For streamlining this setup in a ``sbatch`` file and automating IP address assignment as rendezvous endpoint, you can ask ChatGPT. 
+
+
+
 ## Using macros in ``~/.bashrc``
 Borrow some GPUs:
 ```
