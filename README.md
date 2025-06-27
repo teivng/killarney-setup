@@ -229,6 +229,21 @@ where ``--rdzv_id`` can be set to whatever but needs to be the same across nodes
 
 We assume that in your main process file, you're initializing ``nccl`` correctly. 
 
+## Multi-node ``sbatch`` 
+
+The file ``multinode.sbatch`` gives a template on how to do multi-node multi-GPU parallelization. It sets the correct environment variables, parses the correct IP addresses, and ``srun`` ``torchrun`` jobs individually with the same rendezvous endpoint.
+
+The script uses ``srun`` to launch jobs so that processes running on each of your nodes inherit Slurm's environment variables in order to get global rank and local rank variables for your GPUs. 
+
+A ``nccl`` template using ``torch.distributed`` is provided in ``template_distributed.py``. This sets up a few functions that grab environment parameters and sets up your device.
+
+### How/why does this work? 
+Don't worry about it.
+
+### Help! My model doesn't fit on one GPU
+
+→ Megatron-LM, DeepSpeed, FairScale, FSDP. Apparently you can use ``accelerate`` and set DeepSpeed stage ``2`` or ``2``, it will automatically shard your model, handle optimizer partitioning, and manage CPU/GPU offloading.
+
 ## Using macros in ``~/.bashrc``
 Borrow some GPUs:
 ```
