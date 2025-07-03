@@ -18,7 +18,7 @@ Add this line to the end of your ``.bashrc``:
 eval "$(starship init bash)"
 ```
 
-Source and enjoy.
+Source and enjoy. A starter config is provided in this repository at ``starship.toml``. Copy it to ``~/.config/starship.toml`` to load the config. 
 
 ## Login
 
