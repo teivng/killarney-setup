@@ -2,6 +2,24 @@
 
 This helps you set up your dev environment on Killarney. Assume you already have a CCDB account, and your PI has added you to their allocation. For the purposes of this guide, we will use ``aip-supervisor`` as PI allocation, and ``student`` as user. These are simply examples, customize depending on your needs and configurations. We recommend you follow this guide in order. 
 
+## ``starship``
+
+You want to make your bash prompt based. Here's how to do it. 
+
+Install ``starship`` **locally**:
+
+```
+curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir ~/.local/bin
+```
+
+Add this line to the end of your ``.bashrc``:
+
+```
+eval "$(starship init bash)"
+```
+
+Source and enjoy.
+
 ## Login
 
 Add your ED25519 and RSA keys of your home machine to https://ccdb.alliancecan.ca/ssh_authorized_keys. Setup MFA for CCDB if you haven't already done so: https://ccdb.alliancecan.ca/multi_factor_authentications. 
