@@ -2,6 +2,30 @@
 
 This helps you set up your dev environment on Killarney. Assume you already have a CCDB account, and your PI has added you to their allocation. For the purposes of this guide, we will use ``aip-supervisor`` as PI allocation, and ``student`` as user. These are simply examples, customize depending on your needs and configurations. We recommend you follow this guide in order. 
 
+## Table of Contents
+- [Killarney Setup](#killarney-setup)
+    - [``starship``](#starship)
+    - [Login](#login)
+        - [Hopping between login nodes](#hopping-between-login-nodes)
+        - [Home machine aliasing](#home-machine-aliasing)
+    - [Set up a ``code`` tunnel](#setup-a-code-tunnel)
+        - [Install the ``code`` server](#install-the-code-server)
+        - [Run the code server](#run-the-code-server)
+    - [``srun`` jobs: interactive session](#srun-jobs-interactive-session)
+    - [``sbatch`` jobs](#sbatch-jobs)
+    - [Configure your ``python`` environments](#configure-your-python-environments)
+        - [IMPORTANT! ``wandb`` ](#important-wandb)
+    - [Run a ``jupyter`` server](#run-a-jupyter-server)
+        - [``sbatch``-ing your ``jupyter`` server](#sbatch-ing-your-jupyter-server)
+- [Distributed training](#distributed-training)
+    - [Single-node multi-GPU](#single-node-multi-gpu)
+    - [Multi-node multi-GPU](#multi-node-multi-gpu)
+    - [Multi-node ``sbatch``](#multi-node-sbatch)
+        - [How/why does this work? ](#howwhy-does-this-work)
+        - [Help! My model doesn't fit on one GPU](#help-my-model-doesnt-fit-on-one-gpu)
+    - [Using macros in ``~/.bashrc``](#using-macros-in-bashrc)
+    - [Final remarks](#final-remarks)
+
 ## ``starship``
 
 You want to make your bash prompt based. Here's how to do it. 
