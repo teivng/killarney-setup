@@ -230,7 +230,7 @@ Running ``ifconfig``, two network interfaces are of interest: ``eth0`` and ``ib0
 We would like to have nodes talk to each other through ``ib0`` instead of ``eth0``. **HOWEVER**, the correct ``torchrun`` ``--rdzv_endpoint`` is going to be the ``eth0`` address, **not** the ``ib0`` address, for reasons unknown, we will not worry about those right meow.
 
 
-Let's say we're doing distirbuted training on and we are allocated 8 GPUs across 2 nodes ``kn010`` and ``kn011``, with ``kn010`` being the master node. First, export certain environment variables to use InfiniBand **on both nodes**:
+Let's say we're doing distributed training on and we are allocated 8 GPUs across 2 nodes ``kn010`` and ``kn011``, with ``kn010`` being the master node. First, export certain environment variables to use InfiniBand **on both nodes**:
 
 ```
 export NCCL_IB_DISABLE=0             # Enable InfiniBand
