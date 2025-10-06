@@ -13,6 +13,7 @@ $cmd_duration\
 $shell\
 $time\
 $username\
+$hostname\
 $line_break\
 $character\
 """
@@ -127,8 +128,11 @@ time_format = '%H:%M'
 disabled = false
 
 [username]
-format = '[─](fg:current_line)[](fg:flamingo)[ ](fg:primary bg:flamingo)[](fg:flamingo bg:box)[ $user](fg:foreground bg:box)[](fg:box) '
+format = '[─](fg:current_line)[](fg:flamingo)[ ](fg:primary bg:flamingo)[](fg:flamingo bg:box)[ $user](fg:foreground bg:box)[](fg:box)'
 show_always = true
+
+[hostname]
+format = '[─](fg:current_line)[](fg:yellow)[ ](fg:primary bg:yellow)[](fg:yellow bg:box)[ $hostname](fg:foreground bg:box)[](fg:box) '
 
 [character]
 format = """
