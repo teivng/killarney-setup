@@ -38,7 +38,7 @@ yellow = '#eed49f'
 flamingo = '#f0c6c6'
 
 [os]
-format = '(fg:current_line)[](fg:red)[$symbol](fg:primary bg:red)[](fg:red)'
+format = '(fg:current_line)[](fg:red)[$symbol ](fg:primary bg:red)[](fg:red)'
 disabled = false
 
 [os.symbols]
